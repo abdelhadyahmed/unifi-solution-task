@@ -1,16 +1,20 @@
-import React ,{useState} from 'react'
+import React ,{useContext, useState} from 'react'
 import TTodo from '../../types/TTodo';
 import { TextField } from '@mui/material';
-
+import './styles.scss';
+import { DarkModeContext } from '../../Providers/DarkmoodProvider/darkmoodProvider';
 interface ITodo{
     todo:TTodo;
     deleteTodo:any;
     finishTodo:any;
     saveEdits:any;
+    archiveTodo:any;
+    isArchived:boolean;
   }
 
-export default function Todo({todo,deleteTodo,finishTodo,saveEdits}:ITodo) {
+export default function Todo({todo,deleteTodo,finishTodo,saveEdits,archiveTodo,isArchived}:ITodo) {
   const {id,title,description,checked,createdAt,finishedAt,ArchivedAt} = todo;
+  const { darkMode } = useContext<any>(DarkModeContext);
   const [isEdit,setIsEdit] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     title: title,
@@ -21,7 +25,7 @@ export default function Todo({todo,deleteTodo,finishTodo,saveEdits}:ITodo) {
   };
 
   return (
-    <section>
+    <section className='todo-container' style={{ backgroundColor: darkMode?'black':'white', color: darkMode?'white':'black'}}>
         {isEdit? <TextField
           name="title"
           label="Title"
@@ -36,10 +40,14 @@ export default function Todo({todo,deleteTodo,finishTodo,saveEdits}:ITodo) {
         />:<p style={{textDecoration: checked?'line-through':""}}>{description}</p>}
         <p>Created At: {createdAt}</p>
         {finishedAt&&<p>Finished At: {finishedAt}</p>}
-        <button onClick={()=>{deleteTodo(id)}}>Delete</button>
-        <button onClick={()=>{finishTodo(id)}}>Finished</button>
-        {isEdit?<button onClick={()=>{saveEdits(id,formData,setIsEdit)}}>Save</button>
-        :<button onClick={()=>{setIsEdit(!isEdit)}}>Edit</button>}
+        {ArchivedAt&&<p>Archived At: {ArchivedAt}</p>}
+        {isArchived?<></>:<>
+          <button onClick={()=>{deleteTodo(id)}}>Delete</button>
+          <button onClick={()=>{finishTodo(id)}}>Finished</button>
+          <button onClick={()=>{archiveTodo(id)}}>Archive</button>
+          {isEdit?<button onClick={()=>{saveEdits(id,formData,setIsEdit)}}>Save</button>
+          :<button onClick={()=>{setIsEdit(!isEdit)}}>Edit</button>}
+        </>}
         
     </section>
   )
