@@ -21,8 +21,12 @@ export default function TodoForm(props:ITodoForm) {
   const handleSubmit = (e:any) => {
     e.preventDefault();
     onSubmit(formData); 
+    setFormData({
+      title: '',
+      description: ''
+    })
   };
-
+  
   return (
     <form className='form' onSubmit={handleSubmit}>
       <FormControl>
