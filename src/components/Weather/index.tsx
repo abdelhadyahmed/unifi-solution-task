@@ -48,19 +48,18 @@ export default function Weather() {
 
   return (
     <>
-        {console.log("asasd",weather,futureWeather)}
-        {loading?<Card sx={{ minWidth: 100 }}>
+        {!loading && weather?<Card sx={{ minWidth: 100 }}>
             <CardContent>
-                {<img src={`http://openweathermap.org/img/w/${weather[0].icon}.png`} alt=""/>}
+                {weather[0]&&<img src={`http://openweathermap.org/img/w/${weather[0].icon}.png`} alt=""/>}
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                { weather[0].main}
+                { weather[0]&&weather[0].main}
                 </Typography>
                 <Typography variant="h5" component="div">
-                { weather[0].description}
+                { weather[0]&&weather[0].description}
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Learn Future Wheather for next 5 days</Button>
+                <Button size="small">Load Future Wheather for next 5 days</Button>
             </CardActions>
         </Card>:<p>No loaded weather</p>}
     </>
