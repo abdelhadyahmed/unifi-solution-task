@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -6,8 +6,11 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { getWeather, getfutureWeather } from '../../api/weather';
+import { DarkModeContext } from '../../Providers/DarkmoodProvider/darkmoodProvider';
 
 export default function Weather() {
+    const { darkMode } = useContext<any>(DarkModeContext);
+
     const [weather,setWeather] = useState<any>([]);
     const [futureWeather,setFutureWeather] = useState<any>({});
     const [loading, setLoading] = useState<boolean>(false);
@@ -49,7 +52,7 @@ export default function Weather() {
   return (
     <>
         {!loading && weather?<Card sx={{ minWidth: 100 }}>
-            <CardContent>
+            <CardContent style={{ backgroundColor: darkMode?'black':'white', color: darkMode?'white':'black'}}>
                 {weather[0]&&<img src={`http://openweathermap.org/img/w/${weather[0].icon}.png`} alt=""/>}
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                 { weather[0]&&weather[0].main}
